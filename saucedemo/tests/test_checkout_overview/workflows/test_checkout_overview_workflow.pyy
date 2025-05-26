@@ -1,0 +1,30 @@
+from saucedemo.pages.inventory_page.inventory_page import InventoryPage
+from saucedemo.pages.cart_page.cart_page import CartPage
+from saucedemo.pages.checkout_page.checkout_page import CheckoutPage
+from saucedemo.pages.checkout_overview_page.checkout_overview_page import CheckoutOverviewPage
+from playwright.sync_api import expect
+
+def test_complete_checkout_workflow(page):
+    # Step 1: Add item
+    inventory = InventoryPage(page)
+    inventory.open()
+    inventory.add_first_item_to_cart()
+
+    # Step 2: Go to cart
+    cart = CartPage(page)
+    cart.open_cart()
+    cart.proceed_to_checkout()
+
+    # Step 3: Fill out checkout form
+    checkout = CheckoutPage(page)
+    checkout.fill_checkout_info("John", "Doe", "12345")
+    checkout.continue_to_overview()
+
+    # Step 4: Verify overview page and finish
+    overview = CheckoutOverviewPage(page)
+    overview.verify_overview_loaded()
+    overview.finish_checkout()
+
+    # Step 5: Confirmation check
+    expect(page).to_have_url("**/checkout-complete.html")
+    expect(page.locator(".complete-header")).to_have_text("THANK YOU FOR YOUR ORDER")
