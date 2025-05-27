@@ -1,4 +1,5 @@
-from saucedemo.pages.login_page import constants, locators
+from saucedemo.pages.login_page import constants
+from saucedemo.pages.login_page.locators import LoginPageLocators
 from playwright.sync_api import expect
 
 class LoginPage:
@@ -7,15 +8,24 @@ class LoginPage:
 
     def open(self):
         self.page.goto(constants.LOGIN_URL)
+     
+    def should_have_login_username(self):
+        expect(self.page.locator(LoginPageLocators.LOGIN_USERNAME)).to_be_visible()
+
+    def should_have_login_password(self):
+        expect(self.page.locator(LoginPageLocators.LOGIN_PASSWORD)).to_be_visible()
+
+    def should_have_login_button(self):
+        expect(self.page.locator(LoginPageLocators.LOGIN_BUTTON)).to_be_visible()
 
     def fill_username(self, username):
-        self.page.fill(locators.LOGIN_USERNAME, username)
+        self.page.fill(LoginPageLocators.LOGIN_USERNAME, username)
 
     def fill_password(self, password):
-        self.page.fill(locators.LOGIN_PASSWORD, password)
+        self.page.fill(LoginPageLocators.LOGIN_PASSWORD, password)
 
     def submit(self):
-        self.page.click(locators.LOGIN_BUTTON)
+        self.page.click(LoginPageLocators.LOGIN_BUTTON)
 
     def login(self, username, password):
         self.open()
@@ -23,3 +33,6 @@ class LoginPage:
         self.fill_password(password)
         self.submit()
         
+    def assert_login_successful(self):
+        expect(self.page).to_have_url(constants.INVENTORY_URL)
+

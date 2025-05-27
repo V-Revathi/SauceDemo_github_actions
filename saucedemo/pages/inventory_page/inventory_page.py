@@ -1,4 +1,5 @@
-from saucedemo.pages.inventory_page import constants, locators
+from saucedemo.pages.inventory_page import constants
+from saucedemo.pages.inventory_page.locators import InventoryPageLocators as locators
 from playwright.sync_api import expect
 
 class InventoryPage:
@@ -27,3 +28,7 @@ class InventoryPage:
 
         # Click the button to add the item to the cart
         add_button.click()
+
+    def should_display_six_items(self):
+        """Verify exactly 6 inventory items are displayed on the page."""
+        expect(self.page.locator(locators.INVENTORY_ITEMS)).to_have_count(6)

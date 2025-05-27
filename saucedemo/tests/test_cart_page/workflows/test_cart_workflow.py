@@ -1,6 +1,5 @@
 from saucedemo.pages.cart_page.cart_page import CartPage
 from saucedemo.pages.inventory_page.inventory_page import InventoryPage
-from playwright.sync_api import expect
 
 def test_add_item_and_checkout(page):
     inventory = InventoryPage(page)
@@ -14,7 +13,4 @@ def test_add_item_and_checkout(page):
     names = cart.get_cart_item_names()
     assert len(names) > 0
 
-    with page.expect_navigation():
-        cart.proceed_to_checkout()
-
-    expect(page).to_have_url("https://www.saucedemo.com/v1/checkout-step-one.html", timeout=5000)
+    cart.proceed_to_checkout_and_verify()

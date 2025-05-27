@@ -1,11 +1,9 @@
-from saucedemo.pages.checkout_page import constants, locators
-from playwright.sync_api import expect
+from saucedemo.pages.checkout_page.checkout_page import CheckoutPage
+from saucedemo.pages.checkout_page import constants
 
 def test_checkout_form_elements_visible(page):
     page.goto(constants.CHECKOUT_STEP_ONE_URL)
+    checkout_page = CheckoutPage(page)
 
-    expect(page.locator(locators.FIRST_NAME_INPUT)).to_be_visible()
-    expect(page.locator(locators.LAST_NAME_INPUT)).to_be_visible()
-    expect(page.locator(locators.POSTAL_CODE_INPUT)).to_be_visible()
-    expect(page.locator(locators.CONTINUE_BUTTON)).to_be_visible()
-    expect(page.locator(locators.CANCEL_BUTTON)).to_be_visible()
+    checkout_page.verify_checkout_page_loaded()
+    checkout_page.verify_form_elements_visible()
