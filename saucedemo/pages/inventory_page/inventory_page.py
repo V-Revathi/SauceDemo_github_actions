@@ -1,5 +1,3 @@
-# pages/inventory_page/inventory_page.py
-
 from saucedemo.pages.inventory_page import constants, locators
 from playwright.sync_api import expect
 
@@ -17,9 +15,15 @@ class InventoryPage:
     def get_item_names(self):
         return [el.inner_text() for el in self.page.query_selector_all(locators.ITEM_NAME)]
 
-        # In inventory_page.py
     def add_first_item_to_cart(self):
-        # self.page.locator("button").nth(0).click()
-        self.page.locator("button[data-test='add-to-cart-sauce-labs-backpack']").click()
+        # Ensure the inventory list is visible
+        expect(self.page.locator(".inventory_list")).to_be_visible()
 
+        # Locate the first visible "Add to cart" button by text
+        add_button = self.page.locator("button:has-text('Add to cart')").first
 
+        # Confirm it's visible
+        expect(add_button).to_be_visible(timeout=5000)
+
+        # Click the button to add the item to the cart
+        add_button.click()

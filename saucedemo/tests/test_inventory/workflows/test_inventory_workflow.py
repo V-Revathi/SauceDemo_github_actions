@@ -3,6 +3,7 @@ from playwright.sync_api import expect
 
 def test_inventory_page_loads_correctly(page):
     inventory = InventoryPage(page)
+    inventory.open()
     inventory.verify_inventory_loaded()
 
 def test_item_names_are_not_empty(page):

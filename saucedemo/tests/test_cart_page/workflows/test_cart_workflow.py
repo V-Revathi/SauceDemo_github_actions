@@ -14,5 +14,7 @@ def test_add_item_and_checkout(page):
     names = cart.get_cart_item_names()
     assert len(names) > 0
 
-    cart.proceed_to_checkout()
-    expect(page).to_have_url("https://www.saucedemo.com/v1/checkout-step-one.html")
+    with page.expect_navigation():
+        cart.proceed_to_checkout()
+
+    expect(page).to_have_url("https://www.saucedemo.com/v1/checkout-step-one.html", timeout=5000)
