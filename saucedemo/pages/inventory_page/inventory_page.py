@@ -32,3 +32,4 @@ class InventoryPage:
     def should_display_six_items(self):
         """Verify exactly 6 inventory items are displayed on the page."""
         expect(self.page.locator(locators.INVENTORY_ITEMS)).to_have_count(6)
+      
